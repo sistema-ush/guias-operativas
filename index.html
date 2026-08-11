@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Compromiso · Active · IM Studio · Impacto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --orange:#E07A3E;
+  --orange-soft:#FBEADD;
+  --orange-deep:#B85A26;
+  --violet:#7C4DA0;
+  --violet-soft:#F1E9F7;
+  --violet-deep:#5B3578;
+  --green:#6DAF42;
+  --green-soft:#EEF7E4;
+  --green-deep:#4C7E2C;
+  --ink:#241B2F;
+  --ink-soft:#6A5F74;
+  --paper:#FBF9F6;
+  --paper-alt:#F4EFEA;
+  --line:rgba(36,27,47,.12);
+  --white:#FFFFFF;
+  --radius-s:10px;
+  --radius-m:18px;
+  --radius-l:28px;
+  --shadow-soft:0 14px 34px -18px rgba(36,27,47,.35);
+  --font-display:'Fredoka',ui-rounded,'Segoe UI',sans-serif;
+  --font-body:'Inter',system-ui,-apple-system,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,monospace;
+  --maxw:920px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16.5px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block;}
+a{color:inherit;}
+h1,h2,h3{font-family:var(--font-display);margin:0;line-height:1.08;letter-spacing:-.01em;}
+p{margin:0 0 1em;}
+p:last-child{margin-bottom:0;}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+.eyebrow{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-mono);
+  font-size:12.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-soft);margin-bottom:14px;
+}
+.eyebrow .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+
+/* ============ SVG SPRITE (oculto) ============ */
+.sprite{display:none;}
+
+/* ============ ICON BADGE ============ */
+.icon-badge{
+  width:58px;height:58px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex:none;box-shadow:var(--shadow-soft);
+}
+.icon-badge svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.icon-badge.small{width:38px;height:38px;}
+.icon-badge.small svg{width:19px;height:19px;}
+.bg-orange{background:var(--orange);}
+.bg-violet{background:var(--violet);}
+.bg-green{background:var(--green);}
+.text-orange{color:var(--orange-deep);}
+.text-violet{color:var(--violet-deep);}
+.text-green{color:var(--green-deep);}
+
+/* ============ HEADER / NAV ============ */
+header.site{
+  position:sticky;top:0;z-index:40;
+  background:rgba(251,249,246,.86);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  max-width:var(--maxw);margin:0 auto;padding:14px 24px;
+  display:flex;align-items:center;gap:20px;
+}
+.brand{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--font-display);font-weight:600;font-size:16.5px;
+  white-space:nowrap;
+}
+.brand .dotmark{width:11px;height:11px;border-radius:50%;background:conic-gradient(var(--orange),var(--violet),var(--green),var(--orange));flex:none;}
+nav.chips{
+  display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+nav.chips::-webkit-scrollbar{display:none;}
+nav.chips a{
+  flex:none;
+  font-size:13px;font-weight:600;
+  padding:8px 14px;border-radius:999px;
+  border:1px solid var(--line);
+  text-decoration:none;color:var(--ink-soft);
+  transition:all .2s ease;
+  white-space:nowrap;
+}
+nav.chips a:hover{border-color:var(--violet);color:var(--violet-deep);}
+nav.chips a.active{background:var(--ink);border-color:var(--ink);color:#fff;}
+.nav-toggle{display:none;}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;overflow:hidden;
+  padding:96px 0 84px;
+  text-align:center;
+}
+.hero .blobs{position:absolute;inset:0;z-index:0;pointer-events:none;}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.38;}
+.blob.b1{width:420px;height:420px;background:var(--orange);top:-160px;left:-100px;}
+.blob.b2{width:380px;height:380px;background:var(--violet);top:-80px;right:-140px;}
+.blob.b3{width:360px;height:360px;background:var(--green);bottom:-220px;left:38%;}
+.hero .content{position:relative;z-index:1;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:12px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:7px 16px;border-radius:999px;
+  background:var(--white);border:1px solid var(--line);
+  color:var(--ink-soft);margin-bottom:28px;box-shadow:var(--shadow-soft);
+}
+.hero h1{
+  font-size:clamp(2.4rem,5.6vw,4.1rem);
+  font-weight:700;max-width:15ch;margin:0 auto 22px;
+}
+.hero h1 .accent{
+  background:linear-gradient(92deg,var(--orange),var(--violet) 55%,var(--green));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p.lede{
+  max-width:52ch;margin:0 auto 34px;font-size:18px;color:var(--ink-soft);
+}
+.chiprow{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:52px;}
+.chiprow span{
+  font-size:13.5px;font-weight:600;padding:8px 18px;border-radius:999px;
+  background:var(--white);border:1px solid var(--line);box-shadow:var(--shadow-soft);
+}
+.scrollcue{
+  display:inline-flex;flex-direction:column;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);
+  animation:bob 2.2s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(7px);}}
+
+/* ============ INTRO CARD ============ */
+.intro-card{
+  max-width:var(--maxw);margin:-8px auto 10px;padding:0 24px;
+}
+.intro-inner{
+  background:var(--white);border:1px solid var(--line);
+  border-radius:var(--radius-l);padding:36px 38px;
+  box-shadow:var(--shadow-soft);
+  display:grid;grid-template-columns:1.1fr 1.6fr;gap:32px;align-items:center;
+}
+.intro-inner h2{font-size:1.5rem;margin-bottom:10px;}
+.intro-inner p{color:var(--ink-soft);}
+.mini-steps{display:flex;flex-direction:column;gap:14px;}
+.mini-step{display:flex;gap:12px;align-items:flex-start;}
+.mini-step .num{
+  font-family:var(--font-mono);font-weight:700;font-size:13px;
+  width:26px;height:26px;border-radius:50%;flex:none;
+  display:flex;align-items:center;justify-content:center;color:#fff;
+}
+.mini-step .txt b{display:block;font-size:14.5px;margin-bottom:2px;}
+.mini-step .txt span{font-size:13.5px;color:var(--ink-soft);}
+
+/* ============ SECTIONS ============ */
+section.topic{padding:76px 0;position:relative;}
+section.topic.tint-orange{background:var(--orange-soft);}
+section.topic.tint-violet{background:var(--violet-soft);}
+section.topic.tint-green{background:var(--green-soft);}
+.topic .head{display:flex;align-items:center;gap:20px;margin-bottom:24px;}
+.topic h2{font-size:clamp(1.5rem,3vw,2rem);}
+.topic .lede{font-size:17.5px;color:var(--ink-soft);max-width:66ch;margin-bottom:34px;}
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:28px;}
+.mini-card{
+  background:var(--white);border:1px solid var(--line);
+  border-radius:var(--radius-m);padding:20px 22px;
+  box-shadow:var(--shadow-soft);
+}
+.mini-card h3{font-family:var(--font-body);font-weight:700;font-size:15px;margin-bottom:6px;}
+.mini-card p{font-size:14.5px;color:var(--ink-soft);margin:0;}
+
+.callout{
+  display:flex;gap:16px;align-items:flex-start;
+  background:var(--white);border-left:4px solid;
+  border-radius:var(--radius-m);padding:22px 24px;margin-bottom:28px;
+  box-shadow:var(--shadow-soft);
+}
+.callout.alert{border-color:var(--orange);}
+.callout.info{border-color:var(--violet);}
+.callout h4{font-family:var(--font-body);font-weight:700;font-size:15px;margin-bottom:6px;}
+.callout p{font-size:14.5px;color:var(--ink-soft);}
+
+/* ---- STEPPER (elemento distintivo) ---- */
+.stepper-wrap{
+  background:var(--white);border:1px solid var(--line);
+  border-radius:var(--radius-l);padding:34px 30px 30px;
+  box-shadow:var(--shadow-soft);
+}
+.stepper-wrap > p.intro-step{font-size:14.5px;color:var(--ink-soft);margin-bottom:26px;}
+.stepper{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding-bottom:6px;}
+.step{flex:1 1 0;min-width:150px;position:relative;padding:0 10px;text-align:center;}
+.step .node{
+  width:46px;height:46px;border-radius:50%;
+  background:var(--paper-alt);border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-weight:700;font-size:13px;color:var(--ink-soft);
+  margin:0 auto 14px;position:relative;z-index:2;
+  transition:background .5s ease, border-color .5s ease, color .5s ease, transform .5s ease;
+}
+.step .line{
+  position:absolute;top:23px;left:-50%;width:100%;height:2px;
+  background:var(--line);z-index:1;
+}
+.step:first-child .line{display:none;}
+.step h5{font-family:var(--font-body);font-weight:700;font-size:13.5px;margin:0 0 6px;}
+.step p{font-size:12.8px;color:var(--ink-soft);margin:0;}
+.step.is-active .node{background:var(--ink);border-color:var(--ink);color:#fff;transform:scale(1.06);}
+.step.is-active .line{background:var(--ink);}
+
+/* ============ RECONOCIMIENTO ============ */
+.pillar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-bottom:34px;}
+.pillar{
+  background:var(--white);border-radius:var(--radius-m);padding:22px;
+  border:1px solid var(--line);box-shadow:var(--shadow-soft);
+}
+.pillar .tag{
+  font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:#fff;display:inline-block;
+  padding:4px 10px;border-radius:999px;margin-bottom:12px;
+}
+.pillar h3{font-family:var(--font-body);font-weight:700;font-size:15px;margin-bottom:6px;}
+.pillar p{font-size:14px;color:var(--ink-soft);margin:0;}
+
+.award-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+@media (max-width:720px){.award-grid{grid-template-columns:1fr;}}
+.award{
+  border-radius:var(--radius-l);padding:28px 26px;color:#fff;
+  box-shadow:var(--shadow-soft);
+}
+.award.trimestral{background:linear-gradient(150deg,var(--orange),var(--orange-deep));}
+.award.anual{background:linear-gradient(150deg,var(--violet),var(--violet-deep));}
+.award h3{font-family:var(--font-display);font-size:1.25rem;margin-bottom:10px;}
+.award ul{margin:14px 0 0;padding-left:18px;font-size:14px;line-height:1.6;}
+.award ul li{margin-bottom:6px;}
+.award .quarters{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.award .quarters span{
+  font-family:var(--font-mono);font-size:11.5px;font-weight:600;
+  background:rgba(255,255,255,.18);padding:5px 10px;border-radius:8px;
+}
+
+/* ============ DOCUMENTOS ============ */
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;}
+.doc-card{
+  background:var(--white);border:1px dashed var(--line);
+  border-radius:var(--radius-m);padding:22px;
+}
+.doc-card .icon-badge{margin-bottom:14px;}
+.doc-card h3{font-family:var(--font-body);font-weight:700;font-size:15px;margin-bottom:6px;}
+.doc-card p{font-size:13.8px;color:var(--ink-soft);}
+
+/* ============ CIERRE ============ */
+.closing{
+  padding:100px 0 90px;text-align:center;position:relative;overflow:hidden;
+  background:var(--ink);color:#fff;
+}
+.closing .blob{opacity:.5;filter:blur(90px);}
+.closing .content{position:relative;z-index:1;}
+.closing .icon-badge{margin:0 auto 26px;}
+.closing h2{font-size:clamp(1.8rem,4vw,2.6rem);max-width:16ch;margin:0 auto 18px;}
+.closing p{max-width:52ch;margin:0 auto;color:rgba(255,255,255,.72);font-size:17px;}
+.closing p.sign{margin-top:22px;color:#fff;font-weight:700;font-family:var(--font-display);font-size:19px;}
+
+/* ============ FOOTER ============ */
+footer{padding:34px 0 46px;background:var(--ink);}
+.foot-inner{
+  max-width:var(--maxw);margin:0 auto;padding:0 24px;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  border-top:1px solid rgba(255,255,255,.12);padding-top:26px;
+  color:rgba(255,255,255,.55);font-size:13px;
+}
+.foot-inner a{text-decoration:none;color:rgba(255,255,255,.75);font-weight:600;}
+
+/* ============ REVEAL ANIMATIONS ============ */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease;}
+.reveal.is-visible{opacity:1;transform:translateY(0);}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:760px){
+  .intro-inner{grid-template-columns:1fr;padding:28px 24px;}
+  .nav-inner{flex-wrap:nowrap;}
+  .brand span.full{display:none;}
+  section.topic{padding:56px 0;}
+  .hero{padding:76px 0 60px;}
+}
+@media (max-width:640px){
+  .stepper{flex-direction:column;overflow-x:visible;gap:22px;}
+  .step{display:flex;align-items:flex-start;gap:14px;text-align:left;padding:0;min-width:0;}
+  .step .node{margin:0;flex:none;}
+  .step .line{display:none;}
+  .step h5{margin-top:2px;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ SPRITE DE ICONOS ============ -->
+<svg class="sprite" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.5s-7.2-4.4-9.6-8.6C.7 8.6 2.1 5 5.6 5c2 0 3.5 1.2 4.4 2.9C10.9 6.2 12.4 5 14.4 5c3.5 0 4.9 3.6 3.2 6.9C15.2 16.1 12 20.5 12 20.5Z" fill="#fff" stroke="none"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></symbol>
+  <symbol id="i-shirt" viewBox="0 0 24 24"><path d="M9 3 12 5.2 15 3l4 3.4-2.4 2.6-1.6-1.2V21H9V7.8L7.4 9 5 6.4 9 3Z"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.2"/><path d="M10 5.5h4"/><circle cx="12" cy="18" r=".6" fill="#fff" stroke="none"/></symbol>
+  <symbol id="i-palm" viewBox="0 0 24 24"><circle cx="18" cy="6" r="2"/><path d="M18 2.3v1.2M22 6h-1.2M18 9.7V8.5M14.7 6h1.2M20.4 3.6l-.9.9M20.4 8.4l-.9-.9M15.6 3.6l.9.9M15.6 8.4l.9-.9"/><path d="M9 21c1-4 1.4-6.6 1.4-9.4"/><path d="M10.4 11.6C8 11.6 6 10 5 8M10.4 11.6c1.6-1.8 2.6-3 6-3.4M10.4 11.6c-1-2.6-1-4.4 0-7.2M10.4 11.6c2 0 3.6-.7 5.6-2.6M10.4 11.6c-2.4-.8-4-.8-6.2 0"/></symbol>
+  <symbol id="i-heartcross" viewBox="0 0 24 24"><path d="M12 20s-7-4.3-9.3-8.3C1.1 8.2 2.5 5 5.7 5c1.9 0 3.3 1.1 4.3 2.7C11 6.1 12.4 5 14.3 5c3.2 0 4.6 3.2 2.9 6.4C14.9 15.4 12 20 12 20Z"/><path d="M12 9v5M9.5 11.5h5"/></symbol>
+  <symbol id="i-mate" viewBox="0 0 24 24"><path d="M8 11c0-2.5 1.8-4 4-4s4 1.5 4 4v4a4 4 0 0 1-4 4 4 4 0 0 1-4-4v-4Z"/><path d="M12 7V5.2M13.4 5.2 17 2M17 2l1.6 1.6"/></symbol>
+  <symbol id="i-desk" viewBox="0 0 24 24"><rect x="9.5" y="4" width="5" height="4" rx=".6"/><path d="M12 8v3"/><rect x="3" y="12" width="18" height="7" rx="1.4"/><path d="M8.4 12v7"/></symbol>
+  <symbol id="i-dumbbell" viewBox="0 0 24 24"><path d="M7 12h10"/><rect x="3" y="9" width="4" height="6" rx="1.2"/><rect x="17" y="9" width="4" height="6" rx="1.2"/><rect x="5.6" y="7.5" width="2.2" height="9" rx="1"/><rect x="16.2" y="7.5" width="2.2" height="9" rx="1"/></symbol>
+  <symbol id="i-family" viewBox="0 0 24 24"><circle cx="7.5" cy="7.5" r="2.3"/><circle cx="16.5" cy="7.5" r="2.3"/><circle cx="12" cy="12.5" r="1.9"/><path d="M4 19v-1.6A3.4 3.4 0 0 1 7.4 14h.2a3.4 3.4 0 0 1 3 1.8"/><path d="M20 19v-1.6a3.4 3.4 0 0 0-3.4-3.4h-.2a3.4 3.4 0 0 0-3 1.8"/><path d="M9 19.2v-.7a3 3 0 0 1 3-3 3 3 0 0 1 3 3v.7"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6-4.6-4.1 6.1-.6L12 3Z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="7.6" r="1" fill="#fff" stroke="none"/><path d="M12 11v6.5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 7v6"/><circle cx="12" cy="16.6" r="1" fill="#fff" stroke="none"/></symbol>
+</defs>
+</svg>
+
+<!-- ============ HEADER ============ -->
+<header class="site">
+  <div class="nav-inner">
+    <a class="brand" href="#top" style="text-decoration:none;">
+      <span class="dotmark"></span>
+      <span class="full">Guía de Compromiso</span>
+    </a>
+    <nav class="chips" aria-label="Secciones">
+      <a href="#puntualidad">Puntualidad</a>
+      <a href="#imagen">Imagen</a>
+      <a href="#telefono">Teléfono</a>
+      <a href="#vacaciones">Vacaciones</a>
+      <a href="#salud">Salud</a>
+      <a href="#mate">Mate</a>
+      <a href="#recepcion">Recepción</a>
+      <a href="#instalaciones">Instalaciones</a>
+      <a href="#pases">Familia</a>
+      <a href="#reconocimiento">Reconocimiento</a>
+    </nav>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="blobs">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+  <div class="wrap content">
+    <span class="hero-badge">Active · IM Studio · Impacto</span>
+    <h1>Esto lo hacemos <span class="accent">juntos.</span></h1>
+    <p class="lede">Esta guía no está pensada para vigilarte ni para señalar errores. Está pensada para que sepas con claridad qué esperamos de vos — y sobre todo, por qué.</p>
+    <div class="chiprow">
+      <span>💪 Trabajo en equipo</span>
+      <span>🤝 Acuerdos claros</span>
+      <span>✨ Sin amenazas</span>
+    </div>
+    <div class="scrollcue">Bajá para leerla ↓</div>
+  </div>
+</section>
+
+<!-- ============ INTRO ============ -->
+<div class="intro-card reveal">
+  <div class="intro-inner">
+    <div>
+      <h2>¿Cómo está armada esta guía?</h2>
+      <p>No vas a encontrar amenazas: vas a encontrar acuerdos claros para que trabajar acá sea cómodo, justo y prolijo para todos.</p>
+    </div>
+    <div class="mini-steps">
+      <div class="mini-step">
+        <span class="num" style="background:var(--orange)">1</span>
+        <span class="txt"><b>Por qué importa</b><span>El sentido detrás de cada pauta, no solo la regla.</span></span>
+      </div>
+      <div class="mini-step">
+        <span class="num" style="background:var(--violet)">2</span>
+        <span class="txt"><b>Cómo lo hacemos</b><span>Lo concreto, para el día a día en el gimnasio.</span></span>
+      </div>
+      <div class="mini-step">
+        <span class="num" style="background:var(--green)">3</span>
+        <span class="txt"><b>Qué hacemos juntos</b><span>Si algo no sale como esperábamos, acompañamos.</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ 01 PUNTUALIDAD ============ -->
+<section class="topic tint-orange" id="puntualidad">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot" style="background:var(--orange)"></span>01 — El valor del tiempo</div>
+    <div class="head reveal">
+      <div class="icon-badge bg-orange"><svg><use href="#i-clock"/></svg></div>
+      <h2>Puntualidad</h2>
+    </div>
+    <p class="lede reveal">El gimnasio funciona como un engranaje: cada turno depende del anterior, y cada socio que llega espera encontrar todo listo. Ser puntual es una forma concreta de decir "contás conmigo" a tus compañeros y a cada persona que te está esperando.</p>
+
+    <div class="card-grid reveal">
+      <div class="mini-card">
+        <h3>La regla de los 10 minutos</h3>
+        <p>Registrás tu ingreso con 10 minutos de anticipación. Turno 07:00 → registro 06:50.</p>
+      </div>
+      <div class="mini-card">
+        <h3>Para qué sirven esos minutos</h3>
+        <p>Encender luces, dejar tus cosas, ponerte el uniforme y estar list@ justo a la hora de inicio.</p>
+      </div>
+      <div class="mini-card">
+        <h3>Cómo lo contamos</h3>
+        <p>Registro posterior a esos 10 minutos = llegada tarde. Regla clara, sin sorpresas.</p>
+      </div>
+    </div>
+
+    <div class="callout alert reveal">
+      <div class="icon-badge small bg-orange"><svg><use href="#i-alert"/></svg></div>
+      <div>
+        <h4>¿Se te complicó algo?</h4>
+        <p>Apenas lo sepas, llamá a tu Coordinador —idealmente con 2 horas de anticipación—. Avisar no borra la llegada tarde, pero sí nos permite reaccionar a tiempo y cuidarte a vos también.</p>
+      </div>
+    </div>
+
+    <div class="stepper-wrap reveal">
+      <p class="intro-step"><strong>Si se repite, ¿qué hacemos juntos?</strong> Nunca sancionamos por sancionar: buscamos entender qué está pasando, en instancias — no en castigos.</p>
+      <div class="stepper">
+        <div class="step"><span class="line"></span><div class="node">1</div><h5>Charlamos</h5><p>Registro simple, memoria del acompañamiento.</p></div>
+        <div class="step"><span class="line"></span><div class="node">2</div><h5>Por escrito</h5><p>Lo formalizamos en tu legajo.</p></div>
+        <div class="step"><span class="line"></span><div class="node">3</div><h5>Una pausa</h5><p>Evaluamos junto a Coordinación.</p></div>
+        <div class="step"><span class="line"></span><div class="node">◆</div><h5>A fondo</h5><p>Si se sostiene, lo trabajamos en profundidad.</p></div>
+      </div>
+      <p style="font-size:13px;color:var(--ink-soft);margin-top:20px;">Cada llegada tarde queda "activa" 90 días corridos. Sin nuevas llegadas tarde en ese período, arrancamos de cero.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 IMAGEN ============ -->
+<section class="topic tint-violet" id="imagen">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot" style="background:var(--violet)"></span>02 — Primera impresión</div>
+    <div class="head reveal">
+      <div class="icon-badge bg-violet"><svg><use href="#i-shirt"/></svg></div>
+      <h2>Imagen profesional</h2>
+    </div>
+    <p class="lede reveal">Solo tenemos unos segundos para generar una primera buena impresión, y esa impresión entra por los ojos. La forma en que nos presentamos comunica, antes de decir una palabra, el nivel de profesionalismo del gimnasio.</p>
+    <div class="card-grid reveal">
+      <div class="mini-card"><h3>Uniforme</h3><p>Indumentaria oficial durante todo el turno, limpia y en buen estado.</p></div>
+      <div class="mini-card"><h3>Días especiales</h3><p>Código de vestimenta comunicado con anticipación en lanzamientos o eventos.</p></div>
+      <div class="mini-card"><h3>Higiene y presencia</h3><p>Aspecto aseado, prolijo y peinado — estamos en contacto cercano con los socios.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 TELÉFONO ============ -->
+<section class="topic tint-orange" id="telefono">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot" style="background:var(--orange)"></span>03 — Foco 100% en el socio</div>
+    <div class="head reveal">
+      <div class="icon-badge bg-orange"><svg><use href="#i-phone"/></svg></div>
+      <h2>Teléfono personal</h2>
+    </div>
+    <p class="lede reveal">Cuando un socio se acerca, se merece toda nuestra atención. Guardamos los celulares durante el turno — no por desconfianza, sino para estar 100% presentes para quien tenemos enfrente.</p>
+    <div class="card-grid reveal">
+      <div class="mini-card"><h3>Al entrar</h3><p>Guardás el celular en tu casillero dentro de los 10 minutos previos al turno.</p></div>
+      <div class="mini-card"><h3>Durante el turno</h3><p>Nada de bolsillo, mostrador o mesas de sala, aunque no lo estés usando.</p></div>
+      <div class="mini-card"><h3>Música y clases</h3><p>Solo usamos los dispositivos que provee el gimnasio para gestionar clases.</p></div>
+      <div class="mini-card"><h3>Emergencias</h3><p>Compartí el teléfono fijo de la sucursal o el del Coordinador con tu familia.</p></div>
+    </div>
+    <div class="callout info reveal">
+      <div class="icon-badge small bg-violet"><svg><use href="#i-info"/></svg></div>
+      <div>
+        <h4>Tus momentos con el celular</h4>
+        <p>Hasta 3 veces por turno, máximo 5 minutos cada vez, sin interferir con la atención al socio. Coordinalo con tu Coordinador de área.</p>
+      </div>
+    </div>
+    <div class="stepper-wrap reveal">
+      <p class="intro-step"><strong>Si se repite, ¿qué hacemos juntos?</strong> La misma lógica de acompañamiento que con la puntualidad.</p>
+      <div class="stepper">
+        <div class="step"><span class="line"></span><div class="node">1</div><h5>Conversamos</h5><p>Guardamos el dispositivo de inmediato.</p></div>
+        <div class="step"><span class="line"></span><div class="node">2</div><h5>Por escrito</h5><p>Queda registrado en tu legajo.</p></div>
+        <div class="step"><span class="line"></span><div class="node">3</div><h5>Una pausa</h5><p>Evaluamos junto a Coordinación.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 VACACIONES ============ -->
+<section class="topic tint-green" id="vacaciones">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot" style="background:var(--green)"></span>04 — Planificación anual</div>
+    <div class="head reveal">
+      <div class="icon-badge bg-green"><svg><use href="#i-palm"/></svg></div>
+      <h2>Vacaciones</h2>
+    </div>
+    <p class="lede reveal">Para que todos puedan descansar sin que el servicio se resienta, organizamos las vacaciones con anticipación. Mientras vos disfrutás tu descanso, el gimnasio sigue funcionando igual de bien.</p>
+    <div class="card-grid reveal">
+      <div class="mini-card"><h3>Cuándo pedirlas</h3><p>Del 15 al 30 de septiembre, para el período Diciembre–Abril.</p></div>
+      <div class="mini-card"><h3>Cómo se evalúan</h3><p>Todas entran en un proceso de evaluación conjunta con Coordinación.</p></div>
+      <div class="mini-card"><h3>Qué tenemos en cuenta</h3><p>Asistencia, puntualidad, devoluciones de socios y disponibilidad ante imprevistos.</p></div>
+      <div class="mini-card"><h3>Confirmación</h3><p>Fechas por escrito antes del 15 de octubre. Esperá esa confirmación antes de reservar.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 SALUD ============ -->
+<section class="topic tint-violet" id="salud">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot" style="background:var(--violet)"></span>05 — Lo primero, siempre</div>
+    <div class="head reveal">
+      <div class="icon-badge bg-violet"><svg><use href="#i-heartcross"/></svg></div>
+      <h2>Cuando no te sentís bien</h2>
+    </div>
+    <p class="lede reveal">Tu salud es lo primero. Esta sección no busca poner en duda cómo te sentís: busca acompañarte y, al mismo tiempo, cuidar la organización de los turnos.</p>
+    <div class="card-grid reveal">
+      <div class="mini-card"><h3>Avisá apenas lo sientas</h3><p>Llamá enseguida a tu Coordinador para contarle la situación.</p></div>
+      <div class="mini-card"><h3>Lo decidimos juntos</h3><p>Evalúan si podés terminar el turno o retirarte antes.</p></div>
+      <div class="mini-card"><h3>Un profesional te revisa</h3><p>La condición para retirarte es pasar por un centro de salud.</p></div>
+      <div class="mini-card"><h3>Al reincorporarte</h3><p>Traé el certificado dentro de las 24 horas para un trámite ágil.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 MATE ============ -->
+<section class="topic tint-green" id="mate">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot" style="background:var(--green)"></span>06 — Cultura compartida</div>
+    <div class="head reveal">
+      <div class="icon-badge bg-green"><svg><use href="#i-mate"/></svg></div>
+      <h2>El mate en la jornada</h2>
+    </div>
+    <p class="lede reveal">El mate es parte de nuestra cultura y lo respetamos como tal. Solo pedimos que su lugar y su momento no compitan nunca con la atención al socio.</p>
+    <div class="card-grid reveal">
+      <div class="mini-card"><h3>En recepción</h3><p>Solo cuando no haya socios esperando o presentes frente al mostrador.</p></div>
+      <div class="mini-card"><h3>En la sala de profes</h3><p>Concentrado en momentos de baja concurrencia, sin instalarse.</p></div>
+      <div class="mini-card"><h3>Prioridad absoluta</h3><p>Si alguien necesita algo, el mate se interrumpe al instante.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 RECEPCIÓN ============ -->
+<section class="topic tint-orange" id="recepcion">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot" style="background:var(--orange)"></span>07 — Un solo equipo</div>
+    <div class="head reveal">
+      <div class="icon-badge bg-orange"><svg><use href="#i-desk"/></svg></div>
+      <h2>Profes en recepción</h2>
+    </div>
+    <p class="lede reveal">Recepción y sala trabajan como un solo equipo. Solo pedimos que el paso por el mostrador sea por un motivo concreto y por poco tiempo.</p>
+    <div class="card-grid reveal">
+      <div class="mini-card"><h3>Clases e invitaciones</h3><p>Consultar o coordinar visitas guiadas y clases de invitación.</p></div>
+      <div class="mini-card"><h3>Cierre de venta</h3><p>Acompañar a un socio en un asesoramiento puntual.</p></div>
+      <div class="mini-card"><h3>Operación</h3><p>Avisar sobre una máquina fuera de servicio o hacer una consulta rápida.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 INSTALACIONES ============ -->
+<section class="topic tint-violet" id="instalaciones">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot" style="background:var(--violet)"></span>08 — Un beneficio del equipo</div>
+    <div class="head reveal">
+      <div class="icon-badge bg-violet"><svg><use href="#i-dumbbell"/></svg></div>
+      <h2>Entrenar fuera de horario</h2>
+    </div>
+    <p class="lede reveal">Tenés el beneficio de usar las instalaciones fuera del horario de atención al público. Un beneficio que se sostiene si lo cuidamos entre todos.</p>
+    <div class="card-grid reveal">
+      <div class="mini-card"><h3>Solo para el Staff</h3><p>Sin excepciones: nada de parejas, familiares o amigos en ese horario.</p></div>
+      <div class="mini-card"><h3>Orden y limpieza</h3><p>Todo listo e impecable para el turno siguiente.</p></div>
+      <div class="mini-card"><h3>Sin música</h3><p>Gimnasio cerrado = sin sonido, por respeto al barrio.</p></div>
+      <div class="mini-card"><h3>Seguridad</h3><p>Responsable de accesos cerrados y del cierre general.</p></div>
+    </div>
+    <div class="callout alert reveal">
+      <div class="icon-badge small bg-orange"><svg><use href="#i-alert"/></svg></div>
+      <div>
+        <h4>Un beneficio de todo el equipo</h4>
+        <p>Si no se cumplen estas pautas —sobre todo el ingreso de personas ajenas al Staff— es un beneficio que se pierde para todos, no solo para quien cometió el error.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 PASES ============ -->
+<section class="topic tint-green" id="pases">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot" style="background:var(--green)"></span>09 — Beneficio para tu familia</div>
+    <div class="head reveal">
+      <div class="icon-badge bg-green"><svg><use href="#i-family"/></svg></div>
+      <h2>Pases familiares</h2>
+    </div>
+    <p class="lede reveal">Nos gusta que las personas que forman parte de tu vida también puedan conocer y disfrutar el gimnasio donde trabajás.</p>
+    <div class="card-grid reveal">
+      <div class="mini-card"><h3>Alcance</h3><p>Al cumplir 3 meses, un pase liberado para un familiar directo.</p></div>
+      <div class="mini-card"><h3>¿Más de un familiar?</h3><p>Tarifa preferencial a través del Plan Familiar.</p></div>
+      <div class="mini-card"><h3>Aprobación</h3><p>Con el visto bueno de tu Coordinador de área.</p></div>
+      <div class="mini-card"><h3>Vigencia</h3><p>El pase acompaña tu vínculo laboral y caduca al desvincularte.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RECONOCIMIENTO ============ -->
+<section class="topic tint-orange" id="reconocimiento">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot" style="background:var(--orange)"></span>10 — Lo bueno también se celebra</div>
+    <div class="head reveal">
+      <div class="icon-badge bg-orange"><svg><use href="#i-star"/></svg></div>
+      <h2>Programa de reconocimiento</h2>
+    </div>
+    <p class="lede reveal">El esfuerzo, la buena actitud y la búsqueda de la excelencia jamás deben pasar desapercibidos. Este programa visibiliza y premia a quienes cuidan con dedicación la experiencia de cada socio.</p>
+
+    <div class="pillar-grid reveal">
+      <div class="pillar"><span class="tag" style="background:var(--orange)">Horario</span><h3>Cumplimiento y asistencia</h3><p>Puntualidad estricta, sin faltas injustificadas.</p></div>
+      <div class="pillar"><span class="tag" style="background:var(--violet)">Estándares</span><h3>Operación e imagen</h3><p>Orden, limpieza, uniforme y pautas internas.</p></div>
+      <div class="pillar"><span class="tag" style="background:var(--green)">Compromiso</span><h3>Involucramiento</h3><p>Proactividad, eventos y propuestas de mejora.</p></div>
+      <div class="pillar"><span class="tag" style="background:var(--orange)">Socios</span><h3>Satisfacción</h3><p>Menciones positivas en encuestas y canales oficiales.</p></div>
+    </div>
+
+    <div class="award-grid reveal">
+      <div class="award trimestral">
+        <h3>Colaborador Destacado del Trimestre</h3>
+        <p style="opacity:.85;font-size:14px;">La puntuación más alta del área, cada tres meses.</p>
+        <ul>
+          <li>Tarjeta de regalo a elección</li>
+          <li>Un día extra de descanso, 100% pago</li>
+          <li>Mención en la cartelera interna</li>
+        </ul>
+        <div class="quarters">
+          <span>Ene–Mar</span><span>Abr–Jun</span><span>Jul–Sep</span><span>Oct–Dic</span>
+        </div>
+      </div>
+      <div class="award anual">
+        <h3>Premio a la Excelencia Staff</h3>
+        <p style="opacity:.85;font-size:14px;">Al mejor promedio anual, los cuatro trimestres.</p>
+        <ul>
+          <li>Beca de formación 100% bonificada</li>
+          <li>Prioridad absoluta en vacaciones</li>
+          <li>Placa de distinción institucional</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DOCUMENTOS ============ -->
+<section class="topic tint-violet" id="documentos">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot" style="background:var(--violet)"></span>Anexos</div>
+    <div class="head reveal">
+      <h2>Documentos y formularios</h2>
+    </div>
+    <p class="lede reveal">Estos formularios están disponibles en versión imprimible con tu Coordinador de área.</p>
+    <div class="doc-grid reveal">
+      <div class="doc-card">
+        <div class="icon-badge small bg-green"><svg><use href="#i-palm"/></svg></div>
+        <h3>Solicitud de vacaciones</h3>
+        <p>Período de recepción: 15 al 30 de septiembre.</p>
+      </div>
+      <div class="doc-card">
+        <div class="icon-badge small bg-orange"><svg><use href="#i-clock"/></svg></div>
+        <h3>Registro de conversación · Puntualidad</h3>
+        <p>Constancia del acompañamiento con tu Coordinador.</p>
+      </div>
+      <div class="doc-card">
+        <div class="icon-badge small bg-violet"><svg><use href="#i-phone"/></svg></div>
+        <h3>Registro de conversación · Celular</h3>
+        <p>Constancia del acuerdo de puesto libre de pantallas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CIERRE ============ -->
+<section class="closing">
+  <div class="blobs">
+    <div class="blob b1" style="background:var(--orange);top:-140px;left:-100px;"></div>
+    <div class="blob b2" style="background:var(--violet);bottom:-160px;right:-100px;"></div>
+  </div>
+  <div class="wrap content reveal">
+    <div class="icon-badge bg-green"><svg><use href="#i-heart"/></svg></div>
+    <h2>Gracias por ser parte.</h2>
+    <p>Esta guía es un punto de partida, no una foto fija. Si algo no te queda claro o tenés una idea para mejorarla, contáselo a tu Coordinador. Preferimos construir esto entre todos.</p>
+    <p class="sign">Lo que hacemos acá, lo hacemos juntos.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <span>© Active · IM Studio · Impacto — Guía de Compromiso y Estándares de Trabajo</span>
+    <a href="#top">Volver arriba ↑</a>
+  </div>
+</footer>
+
+<script>
+// Reveal on scroll
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); }
+  });
+},{threshold:.14});
+revealEls.forEach(el=>io.observe(el));
+
+// Stepper: activar nodos progresivamente cuando entra en viewport
+document.querySelectorAll('.stepper-wrap').forEach(wrap=>{
+  const steps = wrap.querySelectorAll('.step');
+  const stepIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        steps.forEach((s,i)=>{ setTimeout(()=>s.classList.add('is-active'), i*220); });
+        stepIO.unobserve(e.target);
+      }
+    });
+  },{threshold:.4});
+  stepIO.observe(wrap);
+});
+
+// Nav activa según sección visible
+const sections = document.querySelectorAll('section.topic[id]');
+const navLinks = document.querySelectorAll('nav.chips a');
+const navIO = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const link = document.querySelector('nav.chips a[href="#'+entry.target.id+'"]');
+    if(!link) return;
+    if(entry.isIntersecting){
+      navLinks.forEach(l=>l.classList.remove('active'));
+      link.classList.add('active');
+    }
+  });
+},{rootMargin:'-45% 0px -50% 0px'});
+sections.forEach(s=>navIO.observe(s));
+</script>
+
+</body>
+</html>
