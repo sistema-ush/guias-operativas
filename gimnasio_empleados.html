@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Personal — Ficha y Bitácora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EDEEE9;
+    --surface:#FFFFFF;
+    --border:#D9D6CC;
+    --ink:#1B1B1D;
+    --ink-soft:#68675F;
+    --ink-faint:#9B9A90;
+    --accent:#D62839;
+    --accent-dark:#A81E2C;
+    --accent-soft:#FBDEDF;
+    --steel:#33556B;
+    --steel-soft:#DCE6EA;
+    --success:#2E7D4F;
+    --success-soft:#DCEEE2;
+    --warn-soft:#F3E6C9;
+    --warn:#8A6414;
+    --radius:10px;
+    --shadow:0 1px 2px rgba(27,27,29,0.06), 0 8px 24px -12px rgba(27,27,29,0.18);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent-soft);}
+
+  .display{font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:0.02em;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  .app{
+    max-width:1280px;
+    margin:0 auto;
+    padding:28px 24px 80px;
+  }
+
+  /* ---------- HEADER ---------- */
+  .topbar{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:20px;
+    padding-bottom:20px;
+    margin-bottom:22px;
+    border-bottom:3px solid var(--ink);
+  }
+  .brand{display:flex; align-items:center; gap:14px;}
+  .brand-mark{
+    width:44px;height:44px;border-radius:50%;
+    background:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--bg); font-family:'Oswald',sans-serif; font-weight:700; font-size:13px;
+    flex-shrink:0;
+  }
+  .brand h1{
+    font-size:26px; font-weight:700; margin:0; line-height:1;
+  }
+  .brand p{margin:4px 0 0; color:var(--ink-soft); font-size:13px;}
+
+  .topbar-actions{display:flex; gap:10px; align-items:center;}
+  .search{
+    position:relative;
+  }
+  .search input{
+    width:220px;
+    padding:10px 12px 10px 34px;
+    border:1.5px solid var(--border);
+    border-radius:8px;
+    background:var(--surface);
+    font-size:13.5px;
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+  }
+  .search input:focus{outline:none; border-color:var(--ink);}
+  .search svg{position:absolute; left:11px; top:50%; transform:translateY(-50%); opacity:0.4;}
+
+  .btn{
+    display:inline-flex; align-items:center; gap:7px;
+    padding:10px 16px;
+    border-radius:8px;
+    border:none;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    cursor:pointer;
+    transition:transform .08s ease, box-shadow .15s ease;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{background:var(--accent); color:#fff;}
+  .btn-primary:hover{background:var(--accent-dark);}
+  .btn-ghost{background:transparent; color:var(--ink); border:1.5px solid var(--border);}
+  .btn-ghost:hover{border-color:var(--ink);}
+  .btn-steel{background:var(--steel); color:#fff;}
+  .btn-steel:hover{background:#24404f;}
+  .btn-sm{padding:7px 12px; font-size:12.5px;}
+  .btn-danger-text{background:transparent; color:var(--accent); border:none; padding:6px 8px; font-size:12.5px; font-weight:600; cursor:pointer;}
+
+  /* ---------- LAYOUT ---------- */
+  .layout{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:22px;
+    align-items:start;
+  }
+  @media (max-width:860px){
+    .layout{grid-template-columns:1fr;}
+  }
+
+  /* ---------- LIST ---------- */
+  .list-panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .list-header{
+    padding:14px 16px 10px;
+    border-bottom:1px solid var(--border);
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .list-header .count{font-family:'Oswald',sans-serif; font-size:13px; color:var(--ink-soft);}
+  .emp-list{list-style:none; margin:0; padding:6px;}
+  .emp-item{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 10px;
+    border-radius:8px;
+    cursor:pointer;
+    border:1.5px solid transparent;
+  }
+  .emp-item:hover{background:#F5F4F0;}
+  .emp-item.active{background:var(--accent-soft); border-color:var(--accent);}
+  .plate{
+    width:36px; height:36px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Oswald',sans-serif; font-weight:600; font-size:13px;
+    color:#fff; flex-shrink:0;
+    border:3px solid rgba(0,0,0,0.12);
+  }
+  .emp-item-body{min-width:0; flex:1;}
+  .emp-item-name{font-weight:600; font-size:13.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .emp-item-role{font-size:11.5px; color:var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .badge-dot{width:7px; height:7px; border-radius:50%; flex-shrink:0;}
+  .empty-list{padding:30px 16px; text-align:center; color:var(--ink-faint); font-size:13px;}
+
+  /* ---------- DETAIL ---------- */
+  .detail-panel{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    min-height:520px;
+  }
+  .detail-empty{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    min-height:520px; color:var(--ink-faint); gap:10px; text-align:center; padding:40px;
+  }
+  .detail-empty .display{font-size:20px; color:var(--ink-soft);}
+
+  .detail-head{
+    padding:22px 26px 0;
+  }
+  .detail-head-top{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:16px;
+  }
+  .detail-name-row{display:flex; align-items:center; gap:14px;}
+  .plate-lg{
+    width:56px; height:56px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Oswald',sans-serif; font-weight:700; font-size:19px;
+    color:#fff; flex-shrink:0;
+    border:4px solid rgba(0,0,0,0.12);
+  }
+  .detail-name h2{margin:0; font-size:22px; font-weight:700;}
+  .detail-name .puesto{color:var(--ink-soft); font-size:13.5px; margin-top:2px;}
+  .status-pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:5px 11px; border-radius:20px; font-size:11.5px; font-weight:600;
+    font-family:'Inter',sans-serif; text-transform:uppercase; letter-spacing:0.03em;
+    margin-top:8px;
+  }
+  .status-activo{background:var(--success-soft); color:var(--success);}
+  .status-inactivo{background:#EDE9E3; color:var(--ink-soft);}
+  .status-licencia{background:var(--warn-soft); color:var(--warn);}
+
+  .detail-actions{display:flex; gap:8px; flex-shrink:0;}
+
+  .tabs{
+    display:flex; gap:2px;
+    margin:18px 26px 0;
+    border-bottom:1.5px solid var(--border);
+  }
+  .tab{
+    padding:10px 4px; margin-right:22px;
+    font-family:'Oswald',sans-serif; font-size:14px; letter-spacing:0.03em;
+    color:var(--ink-faint); cursor:pointer;
+    border-bottom:2.5px solid transparent;
+    margin-bottom:-1.5px;
+  }
+  .tab.active{color:var(--ink); border-color:var(--accent);}
+
+  .tab-content{padding:22px 26px 26px;}
+
+  /* datos grid */
+  .field-groups{display:flex; flex-direction:column; gap:22px;}
+  .field-group-title{
+    font-family:'Oswald',sans-serif; font-size:12px; letter-spacing:0.08em;
+    color:var(--steel); text-transform:uppercase; margin:0 0 10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .field-group-title::after{content:""; flex:1; height:1px; background:var(--border);}
+  .field-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+    gap:14px 18px;
+  }
+  .field label{
+    display:block; font-size:11px; color:var(--ink-faint); text-transform:uppercase;
+    letter-spacing:0.04em; margin-bottom:4px; font-weight:600;
+  }
+  .field .value{font-size:14px; color:var(--ink);}
+  .field .value.empty{color:var(--ink-faint); font-style:italic;}
+  .field input, .field select, .field textarea{
+    width:100%; padding:8px 10px; border:1.5px solid var(--border); border-radius:7px;
+    font-family:'Inter',sans-serif; font-size:13.5px; color:var(--ink); background:var(--surface);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--ink);}
+  .field textarea{resize:vertical; min-height:60px;}
+  .field.full{grid-column:1/-1;}
+
+  /* historial */
+  .hist-toolbar{
+    display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap;
+  }
+  .filter-chips{display:flex; gap:6px; flex-wrap:wrap;}
+  .chip{
+    padding:6px 12px; border-radius:20px; border:1.5px solid var(--border);
+    font-size:12px; font-weight:600; cursor:pointer; color:var(--ink-soft);
+    background:var(--surface);
+  }
+  .chip.active{background:var(--ink); border-color:var(--ink); color:#fff;}
+
+  .timeline{display:flex; flex-direction:column; gap:0;}
+  .tl-item{
+    position:relative; padding:0 0 22px 26px; border-left:2px solid var(--border); margin-left:6px;
+  }
+  .tl-item:last-child{border-color:transparent; padding-bottom:2px;}
+  .tl-dot{
+    position:absolute; left:-7px; top:2px; width:12px; height:12px; border-radius:50%; border:2.5px solid var(--surface);
+  }
+  .tl-card{
+    background:#FAF9F6; border:1px solid var(--border); border-radius:9px; padding:13px 15px;
+  }
+  .tl-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .tl-tag{
+    font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;
+    padding:3px 8px; border-radius:5px; display:inline-block; margin-bottom:6px;
+  }
+  .tl-fecha{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-faint); white-space:nowrap; flex-shrink:0;}
+  .tl-title{font-weight:600; font-size:14px; margin:0 0 4px;}
+  .tl-notas{font-size:13px; color:var(--ink-soft); white-space:pre-wrap; margin:0;}
+  .tl-asist{font-size:11.5px; color:var(--steel); margin-top:6px;}
+  .tl-del{margin-top:8px;}
+
+  .empty-hist{padding:34px 10px; text-align:center; color:var(--ink-faint); font-size:13px;}
+
+  /* modal */
+  .overlay{
+    position:fixed; inset:0; background:rgba(27,27,29,0.45);
+    display:flex; align-items:center; justify-content:center; padding:20px;
+    z-index:50;
+  }
+  .modal{
+    background:var(--surface); border-radius:12px; width:100%; max-width:560px;
+    max-height:88vh; overflow-y:auto; box-shadow:0 20px 60px -10px rgba(0,0,0,0.35);
+  }
+  .modal-head{
+    padding:18px 24px; border-bottom:1px solid var(--border);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .modal-head h3{margin:0; font-size:17px; font-family:'Oswald',sans-serif; text-transform:uppercase; letter-spacing:0.02em;}
+  .modal-close{background:none; border:none; cursor:pointer; font-size:20px; color:var(--ink-faint); line-height:1;}
+  .modal-body{padding:20px 24px;}
+  .modal-foot{padding:16px 24px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; gap:10px;}
+
+  .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .form-grid .full{grid-column:1/-1;}
+  @media (max-width:560px){.form-grid{grid-template-columns:1fr;}}
+
+  .toast{
+    position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--ink); color:#fff; padding:11px 20px; border-radius:8px; font-size:13px;
+    opacity:0; transition:all .25s ease; pointer-events:none; z-index:100; font-weight:500;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  .loading-screen{
+    display:flex; align-items:center; justify-content:center; min-height:60vh;
+    color:var(--ink-faint); font-family:'Oswald',sans-serif; letter-spacing:0.05em;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+const PUESTO_COLORS = {
+  'Entrenador/a': '#D62839',
+  'Recepción': '#33556B',
+  'Limpieza': '#6B7A3F',
+  'Administración': '#8A6414',
+  'Coordinación': '#5B3A8C',
+  'Otro': '#68675F'
+};
+function colorForPuesto(p){ return PUESTO_COLORS[p] || '#68675F'; }
+function initials(name){
+  return (name||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]?.toUpperCase()||'').join('') || '?';
+}
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function fmtDate(d){
+  if(!d) return '';
+  const dt = new Date(d+'T00:00:00');
+  if(isNaN(dt)) return d;
+  return dt.toLocaleDateString('es-AR',{day:'2-digit',month:'short',year:'numeric'});
+}
+
+const HIST_TIPOS = [
+  {key:'individual', label:'Reunión individual', color:'#D62839', soft:'#FBDEDF'},
+  {key:'grupal', label:'Reunión grupal', color:'#33556B', soft:'#DCE6EA'},
+  {key:'licencia', label:'Licencia', color:'#8A6414', soft:'#F3E6C9'},
+  {key:'capacitacion', label:'Capacitación', color:'#2E7D4F', soft:'#DCEEE2'},
+  {key:'otro', label:'Otro', color:'#68675F', soft:'#EDE9E3'}
+];
+function tipoInfo(key){ return HIST_TIPOS.find(t=>t.key===key) || HIST_TIPOS[4]; }
+
+const EMPTY_EMP = {
+  nombreCompleto:'', dni:'', fechaNacimiento:'', telefono:'', email:'', direccion:'', contactoEmergencia:'',
+  puesto:'Entrenador/a', estado:'Activo', fechaIngreso:'', tipoContrato:'Tiempo completo', horario:'',
+  salario:'', cuentaBancaria:'', certificaciones:'', especialidades:'', experiencia:''
+};
+
+let state = {
+  loading:true,
+  empleados:[],
+  historial:[],
+  selectedId:null,
+  activeTab:'datos',
+  editingEmp:false,
+  empForm:null,
+  search:'',
+  histFilter:'todos',
+  showEmpModal:false,
+  showHistModal:false,
+  toast:null
+};
+
+async function loadData(){
+  try{
+    const emp = await window.storage.get('empleados', true);
+    state.empleados = emp ? JSON.parse(emp.value) : [];
+  }catch(e){ state.empleados = []; }
+  try{
+    const hist = await window.storage.get('historial', true);
+    state.historial = hist ? JSON.parse(hist.value) : [];
+  }catch(e){ state.historial = []; }
+  state.loading = false;
+  if(state.empleados.length && !state.selectedId){
+    state.selectedId = state.empleados[0].id;
+  }
+  render();
+}
+
+async function saveEmpleados(){
+  try{
+    await window.storage.set('empleados', JSON.stringify(state.empleados), true);
+  }catch(e){ showToast('No se pudo guardar. Intentá de nuevo.'); }
+}
+async function saveHistorial(){
+  try{
+    await window.storage.set('historial', JSON.stringify(state.historial), true);
+  }catch(e){ showToast('No se pudo guardar. Intentá de nuevo.'); }
+}
+
+let toastTimer;
+function showToast(msg){
+  state.toast = msg;
+  render();
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ state.toast=null; render(); }, 2200);
+}
+
+function el(tag, attrs={}, ...children){
+  const e = document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs)){
+    if(k==='class') e.className = v;
+    else if(k.startsWith('on') && typeof v==='function') e.addEventListener(k.slice(2), v);
+    else if(k==='html') e.innerHTML = v;
+    else if(v!==false && v!==null && v!==undefined) e.setAttribute(k,v);
+  }
+  children.flat().forEach(c=>{
+    if(c===null||c===undefined||c===false) return;
+    if(typeof c==='string'||typeof c==='number') e.appendChild(document.createTextNode(c));
+    else e.appendChild(c);
+  });
+  return e;
+}
+
+function render(){
+  const root = document.getElementById('root');
+  root.innerHTML = '';
+  if(state.loading){
+    root.appendChild(el('div',{class:'loading-screen'}, 'CARGANDO...'));
+    return;
+  }
+  const app = el('div',{class:'app'});
+  app.appendChild(renderTopbar());
+  const layout = el('div',{class:'layout'});
+  layout.appendChild(renderList());
+  layout.appendChild(renderDetail());
+  app.appendChild(layout);
+  root.appendChild(app);
+
+  if(state.showEmpModal) root.appendChild(renderEmpModal());
+  if(state.showHistModal) root.appendChild(renderHistModal());
+
+  const toast = el('div',{class:'toast'+(state.toast?' show':'')}, state.toast||'');
+  root.appendChild(toast);
+}
+
+function renderTopbar(){
+  const top = el('div',{class:'topbar'});
+  const brand = el('div',{class:'brand'},
+    el('div',{class:'brand-mark'},'PF'),
+    el('div',{},
+      el('h1',{class:'display'},'Personal del Gimnasio'),
+      el('p',{}, state.empleados.length + ' empleados registrados')
+    )
+  );
+  const search = el('div',{class:'search'},
+    (()=>{ const s=document.createElementNS('http://www.w3.org/2000/svg','svg'); s.setAttribute('width','14'); s.setAttribute('height','14'); s.setAttribute('viewBox','0 0 24 24'); s.setAttribute('fill','none'); s.innerHTML='<path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Z" stroke="#1B1B1D" stroke-width="2"/><path d="M21 21l-4.35-4.35" stroke="#1B1B1D" stroke-width="2" stroke-linecap="round"/>'; return s; })(),
+    el('input',{placeholder:'Buscar empleado...', value:state.search, oninput:(e)=>{state.search=e.target.value; render();}})
+  );
+  const actions = el('div',{class:'topbar-actions'}, search,
+    el('button',{class:'btn btn-primary', onclick:openNewEmpModal},'+ Nuevo empleado')
+  );
+  top.appendChild(brand);
+  top.appendChild(actions);
+  return top;
+}
+
+function filteredEmployees(){
+  const q = state.search.trim().toLowerCase();
+  if(!q) return state.empleados;
+  return state.empleados.filter(e=>
+    (e.nombreCompleto||'').toLowerCase().includes(q) ||
+    (e.puesto||'').toLowerCase().includes(q) ||
+    (e.dni||'').toLowerCase().includes(q)
+  );
+}
+
+function renderList(){
+  const panel = el('div',{class:'list-panel'});
+  const list = filteredEmployees();
+  panel.appendChild(el('div',{class:'list-header'},
+    el('span',{class:'display', style:'font-size:13px;'},'Equipo'),
+    el('span',{class:'count'}, list.length)
+  ));
+  if(!list.length){
+    panel.appendChild(el('div',{class:'empty-list'}, state.empleados.length? 'Sin resultados para la búsqueda.' : 'Todavía no cargaste empleados.'));
+    return panel;
+  }
+  const ul = el('ul',{class:'emp-list'});
+  list.forEach(emp=>{
+    const active = emp.id===state.selectedId;
+    const statusColor = emp.estado==='Activo' ? 'var(--success)' : emp.estado==='Licencia' ? 'var(--warn)' : 'var(--ink-faint)';
+    const item = el('li',{class:'emp-item'+(active?' active':''), onclick:()=>{state.selectedId=emp.id; state.activeTab='datos'; state.editingEmp=false; render();}},
+      el('div',{class:'plate', style:`background:${colorForPuesto(emp.puesto)}`}, initials(emp.nombreCompleto)),
+      el('div',{class:'emp-item-body'},
+        el('div',{class:'emp-item-name'}, emp.nombreCompleto || 'Sin nombre'),
+        el('div',{class:'emp-item-role'}, emp.puesto || '—')
+      ),
+      el('span',{class:'badge-dot', style:`background:${statusColor}`})
+    );
+    ul.appendChild(item);
+  });
+  panel.appendChild(ul);
+  return panel;
+}
+
+function renderDetail(){
+  const panel = el('div',{class:'detail-panel'});
+  const emp = state.empleados.find(e=>e.id===state.selectedId);
+  if(!emp){
+    panel.appendChild(el('div',{class:'detail-empty'},
+      el('div',{class:'display'}, state.empleados.length ? 'Elegí un empleado' : 'Cargá tu primer empleado'),
+      el('p',{}, 'Los datos y el historial de reuniones aparecen acá.'),
+      !state.empleados.length ? el('button',{class:'btn btn-primary', onclick:openNewEmpModal},'+ Nuevo empleado') : null
+    ));
+    return panel;
+  }
+
+  const head = el('div',{class:'detail-head'});
+  const statusClass = emp.estado==='Activo'?'status-activo':emp.estado==='Licencia'?'status-licencia':'status-inactivo';
+  const top = el('div',{class:'detail-head-top'},
+    el('div',{class:'detail-name-row'},
+      el('div',{class:'plate-lg', style:`background:${colorForPuesto(emp.puesto)}`}, initials(emp.nombreCompleto)),
+      el('div',{},
+        el('div',{class:'detail-name'},
+          el('h2',{}, emp.nombreCompleto || 'Sin nombre'),
+          el('div',{class:'puesto'}, emp.puesto || '—')
+        ),
+        el('span',{class:'status-pill '+statusClass}, emp.estado || 'Activo')
+      )
+    ),
+    el('div',{class:'detail-actions'},
+      el('button',{class:'btn btn-ghost btn-sm', onclick:()=>openEditEmpModal(emp)},'Editar'),
+      el('button',{class:'btn btn-danger-text', onclick:()=>deleteEmployee(emp.id)},'Eliminar')
+    )
+  );
+  head.appendChild(top);
+  panel.appendChild(head);
+
+  const tabs = el('div',{class:'tabs'},
+    el('div',{class:'tab'+(state.activeTab==='datos'?' active':''), onclick:()=>{state.activeTab='datos'; render();}},'Datos'),
+    el('div',{class:'tab'+(state.activeTab==='historial'?' active':''), onclick:()=>{state.activeTab='historial'; render();}},'Historial')
+  );
+  panel.appendChild(tabs);
+
+  const content = el('div',{class:'tab-content'});
+  if(state.activeTab==='datos'){
+    content.appendChild(renderDatos(emp));
+  } else {
+    content.appendChild(renderHistorial(emp));
+  }
+  panel.appendChild(content);
+  return panel;
+}
+
+function fieldView(label, value){
+  return el('div',{class:'field'},
+    el('label',{}, label),
+    value ? el('div',{class:'value'}, value) : el('div',{class:'value empty'}, 'Sin cargar')
+  );
+}
+
+function renderDatos(emp){
+  const wrap = el('div',{class:'field-groups'});
+
+  wrap.appendChild(el('div',{},
+    el('div',{class:'field-group-title'},'Datos personales'),
+    el('div',{class:'field-grid'},
+      fieldView('DNI', emp.dni),
+      fieldView('Fecha de nacimiento', emp.fechaNacimiento ? fmtDate(emp.fechaNacimiento) : ''),
+      fieldView('Teléfono', emp.telefono),
+      fieldView('Email', emp.email),
+      fieldView('Dirección', emp.direccion),
+      fieldView('Contacto de emergencia', emp.contactoEmergencia)
+    )
+  ));
+
+  wrap.appendChild(el('div',{},
+    el('div',{class:'field-group-title'},'Datos laborales'),
+    el('div',{class:'field-grid'},
+      fieldView('Fecha de ingreso', emp.fechaIngreso ? fmtDate(emp.fechaIngreso) : ''),
+      fieldView('Tipo de contrato', emp.tipoContrato),
+      fieldView('Horario', emp.horario),
+      fieldView('Salario / forma de pago', emp.salario),
+      fieldView('Cuenta bancaria (CBU/alias)', emp.cuentaBancaria)
+    )
+  ));
+
+  wrap.appendChild(el('div',{},
+    el('div',{class:'field-group-title'},'Datos profesionales'),
+    el('div',{class:'field-grid'},
+      fieldView('Especialidades', emp.especialidades),
+      fieldView('Certificaciones', emp.certificaciones),
+      fieldView('Experiencia previa', emp.experiencia)
+    )
+  ));
+
+  return wrap;
+}
+
+function empHistorial(empId){
+  return state.historial.filter(h=>h.empleadoId===empId).sort((a,b)=> (b.fecha||'').localeCompare(a.fecha||''));
+}
+
+function renderHistorial(emp){
+  const wrap = el('div',{});
+  let entries = empHistorial(emp.id);
+  const toolbar = el('div',{class:'hist-toolbar'});
+  const chips = el('div',{class:'filter-chips'},
+    el('div',{class:'chip'+(state.histFilter==='todos'?' active':''), onclick:()=>{state.histFilter='todos'; render();}},'Todos')
+  );
+  HIST_TIPOS.forEach(t=>{
+    chips.appendChild(el('div',{class:'chip'+(state.histFilter===t.key?' active':''), onclick:()=>{state.histFilter=t.key; render();}}, t.label));
+  });
+  toolbar.appendChild(chips);
+  toolbar.appendChild(el('button',{class:'btn btn-steel btn-sm', onclick:()=>openNewHistModal(emp.id)},'+ Agregar registro'));
+  wrap.appendChild(toolbar);
+
+  if(state.histFilter!=='todos') entries = entries.filter(h=>h.tipo===state.histFilter);
+
+  if(!entries.length){
+    wrap.appendChild(el('div',{class:'empty-hist'}, 'No hay registros de este tipo todavía.'));
+    return wrap;
+  }
+
+  const tl = el('div',{class:'timeline'});
+  entries.forEach(h=>{
+    const info = tipoInfo(h.tipo);
+    const item = el('div',{class:'tl-item'});
+    item.appendChild(el('div',{class:'tl-dot', style:`background:${info.color}; border-color:var(--surface);`}));
+    const card = el('div',{class:'tl-card'});
+    card.appendChild(el('div',{class:'tl-top'},
+      el('div',{},
+        el('span',{class:'tl-tag', style:`background:${info.soft}; color:${info.color}`}, info.label),
+        el('div',{class:'tl-title'}, h.titulo || info.label)
+      ),
+      el('span',{class:'tl-fecha'}, fmtDate(h.fecha))
+    ));
+    if(h.notas) card.appendChild(el('p',{class:'tl-notas'}, h.notas));
+    if(h.asistentes) card.appendChild(el('div',{class:'tl-asist'}, '👥 ' + h.asistentes));
+    card.appendChild(el('div',{class:'tl-del'}, el('button',{class:'btn-danger-text', style:'padding:2px 0;', onclick:()=>deleteHist(h.id)},'Eliminar')));
+    item.appendChild(card);
+    tl.appendChild(item);
+  });
+  wrap.appendChild(tl);
+  return wrap;
+}
+
+/* ---------- MODALS: EMPLEADO ---------- */
+function openNewEmpModal(){
+  state.empForm = {...EMPTY_EMP, id:uid()};
+  state.showEmpModal = true;
+  state.isNewEmp = true;
+  render();
+}
+function openEditEmpModal(emp){
+  state.empForm = {...emp};
+  state.showEmpModal = true;
+  state.isNewEmp = false;
+  render();
+}
+function closeEmpModal(){
+  state.showEmpModal = false;
+  state.empForm = null;
+  render();
+}
+
+function inputField(label, key, opts={}){
+  const wrap = el('div',{class:'field'+(opts.full?' full':'')});
+  wrap.appendChild(el('label',{}, label));
+  let input;
+  if(opts.type==='select'){
+    input = el('select',{onchange:(e)=>{state.empForm[key]=e.target.value;}});
+    opts.options.forEach(o=>{
+      const o_el = el('option',{value:o}, o);
+      if(state.empForm[key]===o) o_el.setAttribute('selected','selected');
+      input.appendChild(o_el);
+    });
+  } else if(opts.type==='textarea'){
+    input = el('textarea',{oninput:(e)=>{state.empForm[key]=e.target.value;}}, state.empForm[key]||'');
+  } else {
+    input = el('input',{type:opts.type||'text', value:state.empForm[key]||'', placeholder:opts.placeholder||'', oninput:(e)=>{state.empForm[key]=e.target.value;}});
+  }
+  wrap.appendChild(input);
+  return wrap;
+}
+
+function renderEmpModal(){
+  const overlay = el('div',{class:'overlay', onclick:(e)=>{ if(e.target===e.currentTarget) closeEmpModal(); }});
+  const modal = el('div',{class:'modal'});
+  modal.appendChild(el('div',{class:'modal-head'},
+    el('h3',{}, state.isNewEmp ? 'Nuevo empleado' : 'Editar empleado'),
+    el('button',{class:'modal-close', onclick:closeEmpModal},'✕')
+  ));
+  const body = el('div',{class:'modal-body'});
+  const grid = el('div',{class:'form-grid'});
+  grid.appendChild(inputField('Nombre completo','nombreCompleto',{full:true, placeholder:'Ej: María López'}));
+  grid.appendChild(inputField('DNI','dni'));
+  grid.appendChild(inputField('Fecha de nacimiento','fechaNacimiento',{type:'date'}));
+  grid.appendChild(inputField('Teléfono','telefono'));
+  grid.appendChild(inputField('Email','email',{type:'email'}));
+  grid.appendChild(inputField('Dirección','direccion',{full:true}));
+  grid.appendChild(inputField('Contacto de emergencia','contactoEmergencia',{full:true, placeholder:'Nombre y teléfono'}));
+  grid.appendChild(inputField('Puesto','puesto',{type:'select', options:['Entrenador/a','Recepción','Limpieza','Administración','Coordinación','Otro']}));
+  grid.appendChild(inputField('Estado','estado',{type:'select', options:['Activo','Licencia','Inactivo']}));
+  grid.appendChild(inputField('Fecha de ingreso','fechaIngreso',{type:'date'}));
+  grid.appendChild(inputField('Tipo de contrato','tipoContrato',{type:'select', options:['Tiempo completo','Medio tiempo','Freelance / por hora','Pasantía']}));
+  grid.appendChild(inputField('Horario','horario',{placeholder:'Ej: Lun a Vie 8-14hs'}));
+  grid.appendChild(inputField('Salario / forma de pago','salario'));
+  grid.appendChild(inputField('Cuenta bancaria (CBU/alias)','cuentaBancaria'));
+  grid.appendChild(inputField('Especialidades','especialidades',{full:true, placeholder:'Ej: Musculación, funcional, yoga'}));
+  grid.appendChild(inputField('Certificaciones','certificaciones',{type:'textarea', full:true, placeholder:'Ej: Profesor de Ed. Física, RCP/primeros auxilios'}));
+  grid.appendChild(inputField('Experiencia previa','experiencia',{type:'textarea', full:true}));
+  body.appendChild(grid);
+  modal.appendChild(body);
+  modal.appendChild(el('div',{class:'modal-foot'},
+    el('button',{class:'btn btn-ghost', onclick:closeEmpModal},'Cancelar'),
+    el('button',{class:'btn btn-primary', onclick:saveEmpFromModal}, state.isNewEmp ? 'Agregar empleado' : 'Guardar cambios')
+  ));
+  overlay.appendChild(modal);
+  return overlay;
+}
+
+async function saveEmpFromModal(){
+  if(!state.empForm.nombreCompleto || !state.empForm.nombreCompleto.trim()){
+    showToast('Poné al menos el nombre del empleado.');
+    return;
+  }
+  const idx = state.empleados.findIndex(e=>e.id===state.empForm.id);
+  if(idx>=0) state.empleados[idx] = state.empForm;
+  else state.empleados.push(state.empForm);
+  state.selectedId = state.empForm.id;
+  state.showEmpModal = false;
+  const wasNew = state.isNewEmp;
+  state.empForm = null;
+  render();
+  await saveEmpleados();
+  showToast(wasNew ? 'Empleado agregado' : 'Cambios guardados');
+}
+
+async function deleteEmployee(id){
+  if(!confirm('¿Eliminar este empleado y todo su historial? Esta acción no se puede deshacer.')) return;
+  state.empleados = state.empleados.filter(e=>e.id!==id);
+  state.historial = state.historial.filter(h=>h.empleadoId!==id);
+  if(state.selectedId===id) state.selectedId = state.empleados[0]?.id || null;
+  render();
+  await saveEmpleados();
+  await saveHistorial();
+  showToast('Empleado eliminado');
+}
+
+/* ---------- MODALS: HISTORIAL ---------- */
+function openNewHistModal(empleadoId){
+  state.histForm = {id:uid(), empleadoId, tipo:'individual', fecha:new Date().toISOString().slice(0,10), titulo:'', notas:'', asistentes:''};
+  state.showHistModal = true;
+  render();
+}
+function closeHistModal(){
+  state.showHistModal = false;
+  state.histForm = null;
+  render();
+}
+
+function renderHistModal(){
+  const overlay = el('div',{class:'overlay', onclick:(e)=>{ if(e.target===e.currentTarget) closeHistModal(); }});
+  const modal = el('div',{class:'modal'});
+  modal.appendChild(el('div',{class:'modal-head'},
+    el('h3',{},'Nuevo registro'),
+    el('button',{class:'modal-close', onclick:closeHistModal},'✕')
+  ));
+  const body = el('div',{class:'modal-body'});
+  const grid = el('div',{class:'form-grid'});
+
+  const tipoField = el('div',{class:'field full'});
+  tipoField.appendChild(el('label',{},'Tipo de registro'));
+  const tipoSelect = el('select',{onchange:(e)=>{state.histForm.tipo=e.target.value;}});
+  HIST_TIPOS.forEach(t=>{
+    const o = el('option',{value:t.key}, t.label);
+    if(state.histForm.tipo===t.key) o.setAttribute('selected','selected');
+    tipoSelect.appendChild(o);
+  });
+  tipoField.appendChild(tipoSelect);
+  grid.appendChild(tipoField);
+
+  const fechaField = el('div',{class:'field'});
+  fechaField.appendChild(el('label',{},'Fecha'));
+  fechaField.appendChild(el('input',{type:'date', value:state.histForm.fecha, onchange:(e)=>{state.histForm.fecha=e.target.value;}}));
+  grid.appendChild(fechaField);
+
+  const tituloField = el('div',{class:'field'});
+  tituloField.appendChild(el('label',{},'Título / motivo'));
+  tituloField.appendChild(el('input',{type:'text', value:state.histForm.titulo, placeholder:'Ej: Revisión de objetivos', oninput:(e)=>{state.histForm.titulo=e.target.value;}}));
+  grid.appendChild(tituloField);
+
+  const asistField = el('div',{class:'field full'});
+  asistField.appendChild(el('label',{},'Asistentes (si es grupal)'));
+  asistField.appendChild(el('input',{type:'text', value:state.histForm.asistentes, placeholder:'Ej: Equipo de recepción', oninput:(e)=>{state.histForm.asistentes=e.target.value;}}));
+  grid.appendChild(asistField);
+
+  const notasField = el('div',{class:'field full'});
+  notasField.appendChild(el('label',{},'Notas'));
+  const ta = el('textarea',{oninput:(e)=>{state.histForm.notas=e.target.value;}}, state.histForm.notas);
+  ta.style.minHeight='90px';
+  notasField.appendChild(ta);
+  grid.appendChild(notasField);
+
+  body.appendChild(grid);
+  modal.appendChild(body);
+  modal.appendChild(el('div',{class:'modal-foot'},
+    el('button',{class:'btn btn-ghost', onclick:closeHistModal},'Cancelar'),
+    el('button',{class:'btn btn-primary', onclick:saveHistFromModal},'Guardar registro')
+  ));
+  overlay.appendChild(modal);
+  return overlay;
+}
+
+async function saveHistFromModal(){
+  if(!state.histForm.fecha){
+    showToast('Elegí una fecha.');
+    return;
+  }
+  state.historial.push(state.histForm);
+  state.showHistModal = false;
+  state.histForm = null;
+  render();
+  await saveHistorial();
+  showToast('Registro guardado');
+}
+
+async function deleteHist(id){
+  if(!confirm('¿Eliminar este registro del historial?')) return;
+  state.historial = state.historial.filter(h=>h.id!==id);
+  render();
+  await saveHistorial();
+  showToast('Registro eliminado');
+}
+
+loadData();
+</script>
+</body>
+</html>
